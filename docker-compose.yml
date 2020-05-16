@@ -1,0 +1,70 @@
+version : '3'
+
+# Run as
+# docker-compose build; docker-compose up -d
+
+
+
+# import numpy as np
+# import pandas as pd
+# from sqlalchemy import create_engine
+# import pymysql
+
+# engine = create_engine('mysql+pymysql://root:data@mysql:3306/data')
+
+# df = pd.read_sql_query('SELECT * FROM my_table', engine)
+# df.head()
+
+services:
+  #Database
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: data
+      MYSQL_DATABASE: default_schema
+    networks:
+      - datanet
+  #phpadmin
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: data
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8183:80
+    networks:
+      - datanet
+  #python notebook
+  datascience-notebook:
+    container_name: jupyter
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+        - "8777:8777"
+    depends_on:
+      - mysql
+    networks:
+      - datanet
+    
+
+networks:
+  datanet:
+    driver: bridge
+
+
+
+
+
+    
