@@ -15,9 +15,11 @@
 > docker exec -i mysql mysql -uroot -p123 mysql < db.sql
 
 ### how to do a Backup from data database
+
 #docker exec mysql /usr/bin/mysqldump -u root --password=123 data > backup.sql
 
 ### how to do a Restore
+
 #cat data.sql | docker exec -i mysql /usr/bin/mysql -u root --password=123 data
 
 ---
@@ -25,11 +27,12 @@
 ## How to run a notebook within a container
 
 ### having the following folder structure
-`.
-├── Dockerfile
-├── data
-│   └── iris.csv
-└── iris-analysis.ipynb`
+
+> .
+> ├── Dockerfile
+> ├── data
+> │   └── iris.csv
+> └── iris-analysis.ipynb
 
 ### first build the image
 
